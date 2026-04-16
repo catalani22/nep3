@@ -70,6 +70,22 @@ Não há teto. Não há custo mensal para o usuário.
 
 ---
 
+## Growth Engine (Auto-divulgação)
+
+Cada plataforma possui seu próprio megafone automático:
+
+| Canal | Airdrop Pulse | NEP3 |
+|-------|--------------|------|
+| Twitter/X | `@AirdropPulseApp` | `@nep3app` |
+| YouTube | Canal AP | Canal Neptune Crypto SaaS |
+| Telegram | Bot AP | Bot NEP3 |
+| Share Dialog | Launch + Claim + Airdrop | Bot Win + Swap + Milestone |
+
+**Infra pronta. Aguardando chaves de API por plataforma.**  
+Detalhes completos: `docs/GROWTH_ENGINE.md`
+
+---
+
 ## Como Retomar Este Projeto
 
 ```bash
