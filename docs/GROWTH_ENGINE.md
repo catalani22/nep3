@@ -334,100 +334,80 @@ Cada share dialog terá botões para:
 **Não depender apenas de "Google Translate" do browser.**  
 Servir o conteúdo já traduzido para cada idioma.
 
-### Idiomas Prioritários (cobertura do mercado crypto)
+### Os 14 Idiomas Neptune (Padrão Global — ASO)
 
-| Idioma | Código | Mercado alvo | Prioridade |
-|--------|--------|-------------|-----------|
-| Inglês | `en` | Global | 🔴 P0 — Base |
-| Português | `pt` | Brasil (2º maior mercado crypto) | 🔴 P0 |
-| Espanhol | `es` | LATAM | 🟡 P1 |
-| Chinês Simplificado | `zh` | China/Asia | 🟡 P1 |
-| Coreano | `ko` | Coreia do Sul | 🟡 P1 |
-| Japonês | `ja` | Japão | 🟠 P2 |
-| Russo | `ru` | CIS | 🟠 P2 |
-| Turco | `tr` | Turquia (top crypto per capita) | 🟠 P2 |
+> **Mesmo padrão do Whale Signals. Todos os projetos Neptune usam os mesmos 14 idiomas.**  
+> Objetivo: alcance global máximo e ASO nas lojas de aplicativos.
 
-### Implementação Técnica
+| Código | Idioma | Nativo | Flag | Tipo | Mercado |
+|--------|--------|--------|------|------|---------|
+| `en` | English | English | 🇺🇸 | Static | Global — base |
+| `pt` | Portuguese | Português | 🇧🇷 | Static | Brasil — 2º maior mercado crypto |
+| `es` | Spanish | Español | 🇪🇸 | Static | LATAM + Espanha |
+| `zh` | Chinese | 中文 | 🇨🇳 | Static | China + diaspora asiática |
+| `ja` | Japanese | 日本語 | 🇯🇵 | Static | Japão — volume altíssimo |
+| `ko` | Korean | 한국어 | 🇰🇷 | Static | Coreia — top crypto per capita |
+| `ar` | Arabic | العربية | 🇸🇦 | On-demand | Golfo + MENA — **RTL** |
+| `ru` | Russian | Русский | 🇷🇺 | On-demand | Rússia + CIS |
+| `hi` | Hindi | हिन्दी | 🇮🇳 | On-demand | Índia — 1.4B pessoas |
+| `vi` | Vietnamese | Tiếng Việt | 🇻🇳 | On-demand | Vietnã — top crypto per capita |
+| `ur` | Urdu | اردو | 🇵🇰 | On-demand | Paquistão — **RTL** |
+| `de` | German | Deutsch | 🇩🇪 | On-demand | Alemanha / DACH |
+| `fr` | French | Français | 🇫🇷 | On-demand | França + Francofonia |
+| `it` | Italian | Italiano | 🇮🇹 | On-demand | Itália |
 
-```bash
-# Instalar
-npm install react-i18next i18next i18next-browser-languagedetector i18next-http-backend
-```
+**6 Static** (traduzidas manualmente, zero custo): EN, PT, ES, ZH, JA, KO  
+**8 On-demand** (Pollinations AI free, sem chave, cache 7 dias): AR, RU, HI, VI, UR, DE, FR, IT  
+**RTL automático** para AR e UR via `dir="rtl"` no `<html>`
+
+### Implementação (padrão Airdrop Pulse — reutilizar)
 
 ```typescript
-// src/lib/i18n.ts
-import i18n from "i18next"
-import { initReactI18next } from "react-i18next"
-import LanguageDetector from "i18next-browser-languagedetector"
-import Backend from "i18next-http-backend"
+// Copiar de Airdrop-Pulse/src/i18n/index.ts
+// O sistema on-demand via Pollinations AI já está implementado e funcionando.
+// Para o NEP3: adaptar as strings de tradução para o contexto DeFi/Swap.
 
-i18n
-  .use(Backend)
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    fallbackLng: "en",
-    supportedLngs: ["en", "pt", "es", "zh", "ko", "ja", "ru", "tr"],
-    detection: {
-      order: ["navigator", "htmlTag", "cookie", "localStorage"],
-      // Detecta automaticamente o idioma do browser
-    },
-    backend: {
-      loadPath: "/locales/{{lng}}/{{ns}}.json"
-    },
-    ns: ["common", "swap", "bots", "airdrop", "launch"],
-    defaultNS: "common"
-  })
+export type Language = 'en'|'pt'|'es'|'zh'|'ja'|'ko'|'ar'|'ru'|'hi'|'vi'|'ur'|'de'|'fr'|'it'
+
+export const LANGUAGES = [
+  { code: 'en', label: 'EN', flag: '🇺🇸', name: 'English',    static: true  },
+  { code: 'pt', label: 'PT', flag: '🇧🇷', name: 'Português',  static: true  },
+  { code: 'es', label: 'ES', flag: '🇪🇸', name: 'Español',    static: true  },
+  { code: 'zh', label: 'ZH', flag: '🇨🇳', name: '中文',        static: true  },
+  { code: 'ja', label: 'JA', flag: '🇯🇵', name: '日本語',      static: true  },
+  { code: 'ko', label: 'KO', flag: '🇰🇷', name: '한국어',      static: true  },
+  { code: 'ar', label: 'AR', flag: '🇸🇦', name: 'العربية',    static: false, rtl: true },
+  { code: 'ru', label: 'RU', flag: '🇷🇺', name: 'Русский',    static: false },
+  { code: 'hi', label: 'HI', flag: '🇮🇳', name: 'हिन्दी',     static: false },
+  { code: 'vi', label: 'VI', flag: '🇻🇳', name: 'Tiếng Việt', static: false },
+  { code: 'ur', label: 'UR', flag: '🇵🇰', name: 'اردو',       static: false, rtl: true },
+  { code: 'de', label: 'DE', flag: '🇩🇪', name: 'Deutsch',    static: false },
+  { code: 'fr', label: 'FR', flag: '🇫🇷', name: 'Français',   static: false },
+  { code: 'it', label: 'IT', flag: '🇮🇹', name: 'Italiano',   static: false },
+]
 ```
 
-```
-public/locales/
-├── en/
-│   ├── common.json    → { "swap": "Swap", "connect": "Connect Wallet", ... }
-│   ├── swap.json
-│   ├── bots.json
-│   ├── airdrop.json
-│   └── launch.json
-├── pt/
-│   ├── common.json    → { "swap": "Trocar", "connect": "Conectar Carteira", ... }
-│   └── ...
-├── es/
-├── zh/
-└── ko/
-```
-
-```tsx
-// Uso nos componentes
-import { useTranslation } from "react-i18next"
-
-function ConnectButton() {
-  const { t } = useTranslation()
-  return <button>{t("connect")}</button>
-  // Mostra "Connect Wallet" para EN, "Conectar Carteira" para PT, etc.
-}
-```
-
-### Seletor de Idioma Manual
-```tsx
-// Componente <LanguageSwitcher /> no Header
-// Dropdown com bandeiras: 🇺🇸 🇧🇷 🇪🇸 🇨🇳 🇰🇷 🇯🇵 🇷🇺 🇹🇷
-// Persiste em localStorage
-// Atualiza <html lang="XX"> dinamicamente
-```
-
-### SEO Multi-idioma (hreflang)
+### SEO Multi-idioma (hreflang — todos os 14)
 ```html
-<!-- No <head> de cada página -->
-<link rel="alternate" hreflang="en" href="https://nep3.app/?lang=en" />
-<link rel="alternate" hreflang="pt" href="https://nep3.app/?lang=pt" />
-<link rel="alternate" hreflang="es" href="https://nep3.app/?lang=es" />
-<link rel="alternate" hreflang="zh" href="https://nep3.app/?lang=zh" />
-<link rel="alternate" hreflang="ko" href="https://nep3.app/?lang=ko" />
+<link rel="alternate" hreflang="en"      href="https://nep3.app/?lang=en" />
+<link rel="alternate" hreflang="pt"      href="https://nep3.app/?lang=pt" />
+<link rel="alternate" hreflang="es"      href="https://nep3.app/?lang=es" />
+<link rel="alternate" hreflang="zh"      href="https://nep3.app/?lang=zh" />
+<link rel="alternate" hreflang="ja"      href="https://nep3.app/?lang=ja" />
+<link rel="alternate" hreflang="ko"      href="https://nep3.app/?lang=ko" />
+<link rel="alternate" hreflang="ar"      href="https://nep3.app/?lang=ar" />
+<link rel="alternate" hreflang="ru"      href="https://nep3.app/?lang=ru" />
+<link rel="alternate" hreflang="hi"      href="https://nep3.app/?lang=hi" />
+<link rel="alternate" hreflang="vi"      href="https://nep3.app/?lang=vi" />
+<link rel="alternate" hreflang="ur"      href="https://nep3.app/?lang=ur" />
+<link rel="alternate" hreflang="de"      href="https://nep3.app/?lang=de" />
+<link rel="alternate" hreflang="fr"      href="https://nep3.app/?lang=fr" />
+<link rel="alternate" hreflang="it"      href="https://nep3.app/?lang=it" />
 <link rel="alternate" hreflang="x-default" href="https://nep3.app/" />
 ```
 
 ### Estratégia de Tradução (custo zero)
-1. **Fase 1:** Inglês + Português (feito manualmente — são as línguas do dono)
+1. **Fase 1:** 6 Static (EN, PT, ES, ZH, JA, KO) — traduzidas manualmente
 2. **Fase 2:** Usar DeepL API free tier (500K chars/mês) para ES, ZH, KO
 3. **Fase 3:** Community translations (usuários nativos revisam e contribuem)
 4. **Fase 4:** OpenAI GPT-4o para novas strings automaticamente
